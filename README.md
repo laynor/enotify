@@ -23,7 +23,7 @@ Messages are sent as strings and have this format:
 ----------------
 
 Message bodies have the form of a keyword argument list, like 
-```emacs-lisp
+```emacs lisp
 	(:register "MySlotID")
 ```
 The message size is intended as the length in characters of the message body.
@@ -34,12 +34,12 @@ An application that wants to send notifications should register a *slot*
 - the equivalent of an icon in a system tray - before sending any notification message.
 
 The message used to register a slot
-```emacs-lisp
+```emacs_lisp
 	(:register <slot-name> :handler-fn <message-data-processing-funcion>)
 ```
 
 The function passed as :handler-fn is of the form
-```emacs-lisp
+```elisp
   (handler-fn slot-id data)
 ```
 whose purpose of the :handler-fn parameter will be clarified in the following section.
