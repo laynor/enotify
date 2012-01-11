@@ -2,7 +2,8 @@
 (require 'enotify-messages)
 
 (defcustom enotify-port 5000
-  "TCP port used for client notifications")
+  "TCP port used for client notifications"
+  :group 'enotify)
 
 (defconst enotify-process-name "Enotify")
 
