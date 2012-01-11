@@ -8,11 +8,11 @@ An application can connect to enotify and send a notification message, that will
 
 ## INSTALLATION 
 Get the code, add the enotify directory to your emacs load-path and require enotify:
-```lisp
+----
      (add-to-list 'load-path "path/to/enotify")
      (require 'enotify)
      (enotify-minor-mode t)
-```
+----
 
 ## USAGE
 Enotify uses the TCP port 5000 by default. You can customize `enotify-port' if you want.
