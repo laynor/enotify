@@ -47,7 +47,7 @@ whose purpose of the :handler-fn parameter will be clarified in the following se
 ### Notifications
 
 The message used to send a notification has the form 
-```Common-Lisp
+```cl
 	(:id <slot-name>
 	 :notification (:text <slot text>
 	                :face <slot face>
