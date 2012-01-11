@@ -23,7 +23,7 @@ Messages are sent as strings and have this format:
 ----------------
 
 Message bodies have the form of a keyword argument list, like 
-```emacs lisp
+```common lisp
 	(:register "MySlotID")
 ```
 The message size is intended as the length in characters of the message body.
