@@ -61,6 +61,7 @@ The message used to send a notification has the form
 - **face**: the face used to display the text in the notification area
 - **help**: tooltip text on mouse-over
 - **mouse-1**: an (iteractive "e") handler function of the form 
+
   	       ----------------------
 			m1-handler (event)            
 	       -------------------
