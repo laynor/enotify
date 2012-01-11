@@ -25,3 +25,4 @@
 (defvar enotify-rspec-mouse-1-handler 'enotify-rspec-mouse-1-handler)
 
 (provide 'enotify-watchr)
+

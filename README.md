@@ -23,9 +23,9 @@ Messages are sent as strings and have this format:
 ----------------
 
 Message bodies have the form of a keyword argument list, like 
---------
+```lisp
 	(:register "MySlotID")
---------
+```
 The message size is intended as the length in characters of the message body.
 
 ### Enotify slots
@@ -34,27 +34,27 @@ An application that wants to send notifications should register a *slot*
 - the equivalent of an icon in a system tray - before sending any notification message.
 
 The message used to register a slot
------
+```lisp
 	(:register <slot-name> :handler-fn <message-data-processing-funcion>)
------
+```
 
 The function passed as :handler-fn is of the form
-----
-  handler-fn (slot-id data)
-----
+```lisp
+  (handler-fn slot-id data)
+```
 whose purpose of the :handler-fn parameter will be clarified in the following section.
 
 ### Notifications
 
 The message used to send a notification has the form 
---------
+```lisp
 	(:id <slot-name>
 	 :notification (:text <slot text>
 	                :face <slot face>
 			:help <tooltip text>
 			:mouse-1 <mouse-1 handler>)
 	 :data <additional-data>)
---------
+```
 
 - **data**: it will be passed to the handler function specified in the slot registration message
 - **text**: the text to be displayed in the notification area
@@ -62,15 +62,15 @@ The message used to send a notification has the form
 - **help**: tooltip text on mouse-over
 - **mouse-1**: an (iteractive "e") handler function of the form 
 
-  	       ----------------------
-			m1-handler (event)            
-	       ----------------------
+  	       ```lisp
+			(m1-handler event)            
+	       ```
 
 	       It's possible to retrieve the slot id with
 
-	       -------------------
+	       ```lisp
 			(enotify-event->slot-id event)
-	       -------------------
+	       ```
 
 ## Ruby/Rails/Rspec/Watchr TDD application
 As of now, [laynor/spectator][laynor/spectator] this is the only application for enotify.
