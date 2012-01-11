@@ -64,8 +64,10 @@ The message used to send a notification has the form
 
   	       ----------------------
 			m1-handler (event)            
-	       -------------------
+	       ----------------------
+
 	       It's possible to retrieve the slot id with
+
 	       -------------------
 			(enotify-event->slot-id event)
 	       -------------------
@@ -74,5 +76,9 @@ The message used to send a notification has the form
 As of now, [laynor/spectator][laynor/spectator] this is the only application for enotify.
 If you are interested, you can look at the code and see how does it work.
 
+It's best used together with [RspecOrgFormatter][Rspec Org Formatter], that provides
+org-mode formatted text for rspec results.
 
 [laynor/spectator]: https://github.com/laynor/spectator
+[RspecOrgFormatter]: https://github.com/laynor/rspec_org_formatter
+
