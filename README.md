@@ -27,9 +27,9 @@ Messages are sent as strings and have this format:
 
 Message bodies have the form of a keyword argument list, like 
 
----
+```lisp
 	(:register "MySlotID")
----
+```
 
 The message size is intended as the length in characters of the message body.
 
@@ -39,9 +39,10 @@ An application that wants to send notifications should register a *slot*
 - the equivalent of an icon in a system tray - before sending any notification message.
 
 The message used to register a slot
-----
+
+```lisp
 	(:register <slot-name> :handler-fn <message-data-processing-funcion>)
-----
+```
 
 The function passed as :handler-fn is of the form
 ----
@@ -52,14 +53,15 @@ whose purpose of the :handler-fn parameter will be clarified in the following se
 ### Notifications
 
 The message used to send a notification has the form 
-----
+
+```lisp
 	(:id <slot-name>
 	 :notification (:text <slot text>
 	                :face <slot face>
 			:help <tooltip text>
 			:mouse-1 <mouse-1 handler>)
 	 :data <additional-data>)
-----
+```
 
 - **data**: it will be passed to the handler function specified in the slot registration message
 - **text**: the text to be displayed in the notification area
