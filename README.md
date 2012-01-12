@@ -7,11 +7,13 @@ It is born as a vehicle for TDD notifications, as the writer does not like annoy
 An application can connect to enotify and send a notification message, that will discreetly appear in the emacs mode-line.
 
 ## INSTALLATION 
+
 Get the code, add the enotify directory to your emacs load-path and require enotify:
+
 ----
-     (add-to-list 'load-path "path/to/enotify")
-     (require 'enotify)
-     (enotify-minor-mode t)
+	(add-to-list 'load-path "path/to/enotify")
+    (require 'enotify)
+    (enotify-minor-mode t)
 ----
 
 ## USAGE
@@ -23,9 +25,9 @@ Messages are sent as strings and have this format:
 ----------------
 
 Message bodies have the form of a keyword argument list, like 
------
+```lisp
 	(:register "MySlotID")
------
+```
 The message size is intended as the length in characters of the message body.
 
 ### Enotify slots
