@@ -45,9 +45,10 @@ The message used to register a slot
 ```
 
 The function passed as :handler-fn is of the form
-----
+
+```lisp
 	(handler-fn slot-id data)
-----
+```
 whose purpose of the :handler-fn parameter will be clarified in the following section.
 
 ### Notifications
