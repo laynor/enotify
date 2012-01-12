@@ -20,14 +20,17 @@ Get the code, add the enotify directory to your emacs load-path and require enot
 Enotify uses the TCP port 5000 by default. You can customize `enotify-port' if you want.
 
 Messages are sent as strings and have this format:
+
 ----------------
     |<message size>|<message body>
 ----------------
 
 Message bodies have the form of a keyword argument list, like 
-```lisp
+
+---
 	(:register "MySlotID")
-```
+---
+
 The message size is intended as the length in characters of the message body.
 
 ### Enotify slots
