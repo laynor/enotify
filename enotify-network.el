@@ -7,13 +7,16 @@
 
 (defconst enotify-process-name "Enotify")
 
+(defvar enotify-connection nil
+  "Network connection/process of the enotify server")
+
 (defun enotify-start-server ()
   "Starts the Enotify notification service"
-  (setq myconnection (make-network-process :name enotify-process-name
-					   :server t
-					   :family 'ipv4
-					   :service enotify-port
-					   :filter 'enotify-message-filter)))
+  (setq enotify-connection (make-network-process :name enotify-process-name
+						 :server t
+						 :family 'ipv4
+						 :service enotify-port
+						 :filter 'enotify-message-filter)))
 
 ;;; Notification slot registration
 ;;; Slot identification:
@@ -36,8 +39,8 @@
       (error "Enotify: invalid slot message handler for slot-id %S" id)))
 
 
-(defun hash-has-key? (key table)
-  (or (gethash key h)
+(defun enotify-hash-has-key? (key table)
+  (or (gethash key table)
       (not (gethash key table t))))
 
 (defun enotify-slot-registered? (slot)
