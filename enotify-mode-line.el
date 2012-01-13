@@ -1,6 +1,5 @@
-(require 'enotify-org)
 ;;;; Enotify mode
-;;;###autoload (put 'lunar-mode-line-string 'risky-local-variable t)
+
 (defvar enotify-mode-line-string nil
   "String to display in the mode line.")
 
@@ -55,10 +54,10 @@
 (defconst enotify-normal-face nil
   "face to notify Enotify Standard messages")
 
-(defvar enotify-faces-alist (copy-list `((:standard . nil)
-					 (:success . ,enotify-success-face)
-					 (:warning . ,enotify-warning-face)
-					 (:failure . ,enotify-failure-face))))
+(defvar enotify-faces-alist (copy-seq `((:standard . nil)
+					(:success . ,enotify-success-face)
+					(:warning . ,enotify-warning-face)
+					(:failure . ,enotify-failure-face))))
 
 (defun enotify-face (face)
   (or (cdr (assoc face enotify-faces-alist))
