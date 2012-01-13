@@ -17,13 +17,13 @@
 
 (defun enotify-mp-reinit ()
   (clrhash enotify-mp-cmbt))
-;; get the buffer associated to a client connection
+
+;;; get the buffer associated to a client connection
 (defun enotify-mp-buffer (connection)
   (or (gethash connection enotify-mp-cmbt)
       (enotify-mp-allocate-buffer connection)))
 
-
-;; Store DATA in the buffer associated to CONNECTION
+;;; Store DATA in the buffer associated to CONNECTION
 (defun enotify-mp-store-data (connection data)
   (let ((buffer (enotify-mp-buffer connection)))
     (save-current-buffer 
@@ -31,9 +31,9 @@
       (goto-char (point-max))
       (insert data))))
 
-;; Get a message from the connection (if present)
+;;; Get a message from the connection (if present)
+;; regex matching message size
 (defvar enotify-mp-size-regex "|\\([[:digit:]]+\\)|")
-
 (defun enotify-mp-get-message (connection)
   (let ((buf (if (bufferp connection) connection (enotify-mp-buffer connection))))
     (save-current-buffer
@@ -42,18 +42,19 @@
       (let ((msg-start (re-search-forward enotify-mp-size-regex nil t)))
 	(when msg-start
 	  (let ((header-len (length (match-string 0)))
-		(len (string-to-int (match-string 1))))
+		(len (string-to-number (match-string 1))))
 	    (delete-region 1 (- msg-start header-len))
 	    (when (>= (- (point-max) header-len) len)
 	      (let ((msg (buffer-substring (1+ header-len) (+ header-len 1 len))))
 		(delete-region 1 (min (point-max) (+ header-len 1 len)))
 		msg))))))))
 
+;;; Utility function to print the internal buffers used for message
+;;; passing
 (defun enotify-mp-lscb ()
   (maphash (lambda (k v)
-	     (princ (buffer-name v)))
+	     (print (buffer-name v)))
 	   enotify-mp-cmbt)
-  (princ "\n")
   nil)
       
 (provide 'enotify-messages)
