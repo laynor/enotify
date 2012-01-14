@@ -3,4 +3,5 @@ SOURCES=header.el enotify-group.el enotify-messages.el enotify-mode-line.el enot
 all: enotify-big.el
 
 enotify-big.el: $(SOURCES)
-	cat $(SOURCES) > enotify-big.el
+	-mkdir release
+	cat $(SOURCES) > release/enotify.el
