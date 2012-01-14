@@ -15,12 +15,6 @@
   :type 'string
   :group 'enotify)
 
-
-(defcustom enotify-queue-politic 'fifo
-  "The Emacs command to be used to display a buffer"
-  :group 'enotify
-  :type '(choice (const fifo) (const lifo))) ;; (const priority-fifo) (const priority-lifo)))
-
 (defconst enotify-success-face 'enotify-success-face
   "face to fontify Enotify Success messages")
 
