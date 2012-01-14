@@ -1,2 +1,1 @@
-(provide 'enotify-big)
-;;; enotify-big.el ends here
+;;; enotify.el ends here

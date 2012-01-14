@@ -1,9 +1,12 @@
-;;; enotify-big.el --- a TCP based notification system for the emacs modeline
+;;; enotify.el --- a TCP based notification system for the emacs modeline
 
 ;; Copyright (C) 2012  Alessandro Piras
 
 ;; Author: Alessandro Piras <laynor@gmail.com>
 ;; Keywords: convenience
+;; URL: https://github.com/laynor/enotify
+;; Version: VERSION
+;; Package-Requires: ()
 
 ;; This file is not part of GNU Emacs.
 
