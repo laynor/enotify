@@ -54,10 +54,10 @@
 (defconst enotify-normal-face nil
   "face to notify Enotify Standard messages")
 
-(defvar enotify-faces-alist (copy-seq `((:standard . nil)
-					(:success . ,enotify-success-face)
-					(:warning . ,enotify-warning-face)
-					(:failure . ,enotify-failure-face))))
+(defvar enotify-faces-alist (copy-sequence `((:standard . nil)
+					     (:success . ,enotify-success-face)
+					     (:warning . ,enotify-warning-face)
+					     (:failure . ,enotify-failure-face))))
 
 (defun enotify-face (face)
   (or (cdr (assoc face enotify-faces-alist))
