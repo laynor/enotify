@@ -8,17 +8,17 @@
 (defcustom enotify-mode-line-prefix "[ "
   "Text to display before the notification text in the mode-line."
   :type 'string
-  :group 'enotify-mode-line)
+  :group 'enotify)
 
 (defcustom enotify-mode-line-suffix " ]"
   "Text to display after the notification text in the mode-line."
   :type 'string
-  :group 'enotify-mode-line)
+  :group 'enotify)
 
 
 (defcustom enotify-queue-politic 'fifo
   "The Emacs command to be used to display a buffer"
-  :group 'enotify-mode-line
+  :group 'enotify
   :type '(choice (const fifo) (const lifo))) ;; (const priority-fifo) (const priority-lifo)))
 
 (defconst enotify-success-face 'enotify-success-face
@@ -29,7 +29,7 @@
      (:foreground "#228833" :weight bold))
     (t (:weight bold)))
   "face to fontify Enotify Success messages"
-  :group 'enotify-mode-line)
+  :group 'enotify)
 
 (defconst enotify-failure-face 'enotify-failure-face
   "face to fontify Enotify Failure messages")
@@ -39,7 +39,7 @@
      (:foreground "red" :weight bold))
     (t (:weight bold)))
   "face to fontify Enotify Failure messages"
-  :group 'enotify-mode-line)
+  :group 'enotify)
 
 (defconst enotify-warning-face 'enotify-failure-face
   "face to fontify Enotify Failure messages")
@@ -49,7 +49,7 @@
      (:foreground "goldenrod4" :weight bold))
     (t (:weight bold)))
   "face to fontify Enotify Warning messages"
-  :group 'enotify-mode-line)
+  :group 'enotify)
 
 (defconst enotify-normal-face nil
   "face to notify Enotify Standard messages")

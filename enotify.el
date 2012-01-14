@@ -5,7 +5,7 @@
 ;;;###autoload
 (define-minor-mode enotify-minor-mode
   "Toggle display of notifications in the mode line."
-  :global t :group 'enotify-minor-mode
+  :global t :group 'enotify
   (setq enotify-mode-line-string nil)
   (or global-mode-string (setq global-mode-string (list "")))
   (if (not enotify-minor-mode)
