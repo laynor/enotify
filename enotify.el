@@ -14,5 +14,8 @@
     (add-to-list 'global-mode-string 'enotify-mode-line-string t)
     (enotify-init-network)
     (enotify-mode-line-update)))
+(defun enotify-version ()
+  (interactive)
+  (message "VERSION"))
 
 (provide 'enotify)
