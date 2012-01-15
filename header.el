@@ -28,5 +28,24 @@
 ;; This package provides a notification area on the emacs modeline.
 ;; External programs can send notifications via TCP, using a simple
 ;; sexp based protocol. See the README.md file for details.
-
+;; To use it, just add the enotify directory to your load-path, or
+;; enotify.el if you are using the single file release, and then
+;;
+;; (require 'enotify)
+;; (enotify-minor-mode 1)
+;;
+;; If you plan to run more emacs sessions, you will probably get
+;; in trouble as the port used by enotify is already in use by
+;; another emacs sessions.
+;; You can wrap (enotify-minor-mode 1) in a condition-case form like
+;; this one
+;;
+;; (condition-case err
+;;     (enotify-minor-mode 1)
+;;   (error (display-warning 'enotify
+;; 			  (format "Cannot start Enotify: %s" err)
+;; 			  :error)))
+;;
 ;;; Code:
+
+(eval-when-compile (require 'cl))

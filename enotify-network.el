@@ -44,7 +44,7 @@
       (not (gethash key table t))))
 
 (defun enotify-slot-registered? (slot)
-  (hash-has-key? slot enotify-message-handlers-table))
+  (enotify-hash-has-key? slot enotify-message-handlers-table))
 
 (defun enotify-connection-id (network-connection)
   "Returns the slot id for NETWORK-CONNECTION.
@@ -108,4 +108,4 @@ right message handler."
   (enotify-start-server)
   (clrhash enotify-message-handlers-table))
 
-(provide 'enotify-network)
+(eval-and-compile (provide 'enotify-network))
