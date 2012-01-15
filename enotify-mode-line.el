@@ -169,6 +169,6 @@ slot-id of the icon clicked can be retrieved using
   (enotify-mode-line-update))
 
 
-(provide 'enotify-mode-line)
+(eval-and-compile (provide 'enotify-mode-line))
 
 ;;; enotify-mode-line.el ends here

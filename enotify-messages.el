@@ -57,4 +57,4 @@
 	   enotify-mp-cmbt)
   nil)
       
-(provide 'enotify-messages)
+(eval-and-compile (provide 'enotify-messages))

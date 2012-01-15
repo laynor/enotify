@@ -8,12 +8,14 @@
   :global t :group 'enotify
   (setq enotify-mode-line-string nil)
   (or global-mode-string (setq global-mode-string (list "")))
-  (if (not enotify-minor-mode)
-      (setq global-mode-string
-	    (delq 'enotify-mode-line-string global-mode-string))
-    (add-to-list 'global-mode-string 'enotify-mode-line-string t)
-    (enotify-init-network)
-    (enotify-mode-line-update)))
+  (cond ((not enotify-minor-mode)
+	 (setq global-mode-string
+	       (delq 'enotify-mode-line-string global-mode-string))
+	 (delete-process enotify-connection))
+	(t (add-to-list 'global-mode-string 'enotify-mode-line-string t)
+	   (enotify-init-network)
+	   (enotify-mode-line-update))))
+
 (defun enotify-version ()
   (interactive)
   (message "VERSION"))
