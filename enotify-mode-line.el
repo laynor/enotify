@@ -166,7 +166,8 @@ slot-id of the icon clicked can be retrieved using
 (defun enotify-mode-line-remove-notification (slot-id)
   "Removes the notification \"icon\" associated with SLOT-ID from the notification area."
   (remhash slot-id enotify-mode-line-notifications-table)
-  (enotify-mode-line-update))
+  (enotify-mode-line-update)
+  (force-mode-line-update))
 
 
 (eval-and-compile (provide 'enotify-mode-line))
