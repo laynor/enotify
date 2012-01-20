@@ -14,6 +14,7 @@
 	 (delete-process enotify-connection))
 	(t (add-to-list 'global-mode-string 'enotify-mode-line-string t)
 	   (enotify-init-network)
+	   (enotify-mp-clean-garbage-timer)
 	   (enotify-mode-line-update))))
 
 (defun enotify-version ()
