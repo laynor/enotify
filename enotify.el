@@ -2,6 +2,7 @@
 (require 'enotify-mode-line)
 (require 'enotify-network)
 
+(defvar enotify-idle-timer nil)
 ;;;###autoload
 (define-minor-mode enotify-minor-mode
   "Toggle display of notifications in the mode line."
@@ -11,10 +12,15 @@
   (cond ((not enotify-minor-mode)
 	 (setq global-mode-string
 	       (delq 'enotify-mode-line-string global-mode-string))
+	 (when (timerp enotify-idle-timer)
+	   (cancel-timer enotify-idle-timer)
+	   (setq enotify-idle-timer nil))
 	 (delete-process enotify-connection))
 	(t (add-to-list 'global-mode-string 'enotify-mode-line-string t)
 	   (enotify-init-network)
-	   (enotify-mp-clean-garbage-timer)
+	   (setq enotify-idle-timer
+		 (run-with-timer enotify-mp-idle-time enotify-mp-idle-time
+				 'enotify-mp-clean-garbage-timer))
 	   (enotify-mode-line-update))))
 
 (defun enotify-version ()
