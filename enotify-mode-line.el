@@ -35,7 +35,7 @@
   "face to fontify Enotify Failure messages"
   :group 'enotify)
 
-(defconst enotify-warning-face 'enotify-failure-face
+(defconst enotify-warning-face 'enotify-warning-face
   "face to fontify Enotify Failure messages")
 
 (defface enotify-warning-face
@@ -59,7 +59,7 @@
       enotify-normal-face))
 ;;; Notification format:
 ;;; (:text <message>
-;;;  :face :warning|:normal|:failure|:success|face
+;;;  :face :warning|:standard|:failure|:success|face
 ;;;  :mouse-1 <click-handler>
 ;;;  :help <tooltip text>)
 (defvar enotify-mode-line-notifications-table (make-hash-table :test 'equal)
@@ -108,13 +108,18 @@ interlaced with SEPARATOR."
 						      (enotify-delete-slot (enotify-event->slot-id event)))]))
   "Menu keymap for the predefined enotify popup menu.")
 
+(defun enotify-change-notification-face (slot-id new-face)
+  (destructuring-bind (&key text face mouse-1 help)
+      (enotify-mode-line-notification slot-id)
+    (enotify-mode-line-update-notification slot-id (list :text text :face new-face :mouse-1 mouse-1 :help help))))
+
 ;; TODO: aggiungere handler per il bottone destro del mouse
 (defun enotify-propertize-notification (slot-id notification)
   "Returns a properly propertized text object given SLOT-ID and
   NOTIFICATION.
 NOTIFICATION has to be specified in this format:
   (:text <message>
-   :face :warning|:normal|:failure|:success|face
+   :face :warning|:standard|:failure|:success|face
    :mouse-1 <click-handler>
    :help <tooltip text>)
 the tooltip text should also contain the help text for mouse-1.
