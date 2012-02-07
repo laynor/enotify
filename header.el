@@ -31,6 +31,9 @@
 ;; To use it, just add the enotify directory to your load-path, or
 ;; enotify.el if you are using the single file release, and then
 ;;
+;; Internal programs wanting to write on the notification area can use
+;; the `enotify-notify' function.
+;;
 ;; (require 'enotify)
 ;; (enotify-minor-mode 1)
 ;;
