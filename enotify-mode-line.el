@@ -54,9 +54,11 @@
 					     (:failure . ,enotify-failure-face))))
 
 (defun enotify-face (face)
-  (or (cdr (assoc face enotify-faces-alist))
-      face
+  (or (if (assoc face enotify-faces-alist)
+	  (cdr (assoc face enotify-faces-alist))
+	face)
       enotify-normal-face))
+
 ;;; Notification format:
 ;;; (:text <message>
 ;;;  :face :warning|:standard|:failure|:success|face
@@ -164,9 +166,16 @@ slot-id of the icon clicked can be retrieved using
 
 (defun enotify-mode-line-update-notification (slot-id notification &optional pos)
   "Updates the notification \"icon\" associated with SLOT-ID to
-  NOTIFICATION."
+NOTIFICATION.
+NOTIFICATION has to be specified in this format:
+  (:text <message>
+   :face :warning|:standard|:failure|:success|face
+   :mouse-1 <click-handler>
+   :help <tooltip text>)"
   (puthash slot-id notification enotify-mode-line-notifications-table)
   (enotify-mode-line-update))
+
+(defalias 'enotify-notify 'enotify-mode-line-update-notification)
 
 (defun enotify-mode-line-remove-notification (slot-id)
   "Removes the notification \"icon\" associated with SLOT-ID from the notification area."
