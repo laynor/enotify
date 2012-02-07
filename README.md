@@ -8,6 +8,9 @@ An application can connect to enotify and send a notification message, that will
 
 ## INSTALLATION 
 
+If you are updating from an old version, please check the INCOMPATIBLE-CHANGES file
+for possible breakages.
+
 Get the code, add the enotify directory to your emacs load-path and require enotify:
 
 ```lisp
@@ -16,8 +19,27 @@ Get the code, add the enotify directory to your emacs load-path and require enot
     (enotify-minor-mode t)
 ```
 
+If you customized the port number related variables (namely
+*enotify-port, enotify-use-next-available-port,
+enotify-fallback-ports*), ensure that the form (enotify-minor-mode t)
+gets evaluated /after/ your customizations, or else your changes won't
+affect enotify's startup.
+
 ## USAGE
-Enotify uses the TCP port 5000 by default. You can customize `enotify-port' if you want.
+
+Enotify uses the TCP port 5000 by default. You can customize
+`enotify-default-port' if you want.  The variable
+*enotify-use-next-available-port* contains a list of ports to be used
+as a fallback when binding *enotify-default-port* fails.
+
+It is also possible to instruct enotify to try increasing port numbers
+(starting from *enotify-default-port* or the last port specified in
+*enotify-fallback-ports* if this s available) for a fixed number of
+times or indefinately until port 65535.  This is done throug the
+custom variable *enotify-use-next-available-port*.
+
+The function *enotify-port* sends a message that displays what port
+enotify is currently running on.
 
 Messages are sent as strings and have this format:
 
