@@ -23,8 +23,15 @@
 				 'enotify-mp-clean-garbage-timer))
 	   (enotify-mode-line-update))))
 
+;;;###autoload
 (defun enotify-version ()
   (interactive)
   (message "VERSION"))
+
+;;;###autoload
+(defun enotify-README ()
+  (interactive)
+  (browse-url "https://github.com/laynor/enotify/blob/master/README.md"))
+
 
 (provide 'enotify)
