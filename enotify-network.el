@@ -65,6 +65,7 @@ abailable one."
 					     enotify-use-next-available-port)))
 
     
+;;;###autoload
 (defun enotify-port ()
   "Displays a message indicating what port is bound to the
 enotify server."

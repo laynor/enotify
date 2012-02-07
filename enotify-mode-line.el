@@ -164,6 +164,7 @@ slot-id of the icon clicked can be retrieved using
 				enotify-mode-line-notifications-separator)
 	   (list enotify-mode-line-suffix)))))
 
+;;;###autoload
 (defun enotify-mode-line-update-notification (slot-id notification &optional pos)
   "Updates the notification \"icon\" associated with SLOT-ID to
 NOTIFICATION.
@@ -175,6 +176,7 @@ NOTIFICATION has to be specified in this format:
   (puthash slot-id notification enotify-mode-line-notifications-table)
   (enotify-mode-line-update))
 
+;;;###autoload
 (defalias 'enotify-notify 'enotify-mode-line-update-notification)
 
 (defun enotify-mode-line-remove-notification (slot-id)
