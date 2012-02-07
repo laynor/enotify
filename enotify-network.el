@@ -1,23 +1,85 @@
 (require 'enotify-mode-line)
 (require 'enotify-messages)
 
-(defcustom enotify-port 5000
-  "TCP port used for client notifications"
+(defcustom enotify-default-port 5000
+  "Default port enotify uses TCP port used for client notifications"
   :group 'enotify)
 
+(defvar enotify-port enotify-default-port)
+
+(defcustom enotify-fallback-ports nil
+  "TCP ports to try if `enotify-default-port' is busy or nil"
+  :group 'enotify
+  :type '(repeat integer))
+
 (defconst enotify-process-name "Enotify")
+
+(defcustom enotify-use-next-available-port nil
+  "Whether enotify should try to bind to the next TCP port when `enotify-port' is busy.
+
+If the value is an integer N, enotify will first try the ports
+specified in `enotify-fallback-ports', and after that, being P the last port specified in `enotify-fallback-ports', it will try the ports in the interval
+[P..P+enotify-use-next-available-port].
+If the value is t, it will indefinitely try increasing port numbers until it finds an
+abailable one."
+  :group 'enotify
+  :type '(choice boolean integer))
 
 (defvar enotify-connection nil
   "Network connection/process of the enotify server")
 
-(defun enotify-start-server ()
+(defun enotify-start-server-1 (port)
   "Starts the Enotify notification service"
   (setq enotify-connection (make-network-process :name enotify-process-name
 						 :server t
 						 :family 'ipv4
-						 :service enotify-port
+						 :service port
 						 :filter 'enotify-message-filter)))
 
+(defun enotify-start-server-2 (port)
+  (condition-case err
+      (progn
+	(enotify-start-server-1 port)
+	nil)
+    (error err)))
+
+(defun enotify-start-server-3 (port port-list try-next)
+  (when (> port 65535) (error "%d is not a valid port number" port))
+  (message "Trying port %d" port)
+  (let ((err (enotify-start-server-2 port)))
+    (if err
+	(cond (port-list
+	       (enotify-start-server-3 (car port-list) (cdr port-list) try-next))
+	      ((and (numberp try-next) (> try-next 0))
+	       (enotify-start-server-3 (1+ port) nil (1- try-next)))
+	      ((or (and (numberp try-next) (zerop try-next)) (null try-next))
+	       (error "[port=%d] %s" port (error-message-string err)))
+	      (try-next
+	       (enotify-start-server-3 (1+ port) nil try-next))
+	      (t (error "[port=%d] %s" port (error-message-string err))))
+      port)))
+    
+(defun enotify-start-server ()
+  (setq enotify-port (enotify-start-server-3 enotify-port
+					     enotify-fallback-ports
+					     enotify-use-next-available-port)))
+
+    
+(defun enotify-port ()
+  "Displays a message indicating what port is bound to the
+enotify server."
+  (interactive)
+  (if enotify-minor-mode
+      (let ((face (cond ((= enotify-port enotify-default-port)
+			 :success)
+			((member enotify-port enotify-fallback-ports)
+			 :warning)
+			(t :failure))))
+	(message "Enotify running on port %s."
+		 (propertize (format "%d" enotify-port)
+			     'face (enotify-face face))))
+    (message "Enotify not running.")))
+				     
 ;;; Notification slot registration
 ;;; Slot identification:
 ;;; - named slot
