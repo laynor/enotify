@@ -69,7 +69,15 @@ example_msg='(:id "esend.sh"
                 :help "Example tooltip")
  :data "Some example data")
 '
-    
+
+nc -h 2>&1 >/dev/null | grep 'OpenBSD' > /dev/null
+openbsd_nc=$?
+if [ $openbsd_nc -eq 0 ]
+then
+    NC="nc"
+else
+    NC="nc -c"
+fi
 check_arguments
 case $msg in
     "register")
@@ -83,7 +91,7 @@ if [ $? -eq 0 ]
 then
     m=`mkmsg "$msg"`
     echo Sending "'$m'" to $host:$port
-    echo $m | nc $host $port
+    echo $m | $NC $host $port
 else
     print_usage "wrong argument format: port = $port"
 fi
