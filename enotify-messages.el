@@ -7,7 +7,7 @@
 ;;; Associations between client connections and buffers
 ;;; are stored in a hash
 
-;; enotify connection --> message buffer table
+;; Enotify Message Passing: Connection --> Message Buffer Table
 (defvar enotify-mp-cmbt (make-hash-table :test 'equal))
 
 ;; allocate a buffer for a connection
