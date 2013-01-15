@@ -16,7 +16,7 @@ print_usage () {
     echo ' $' $0 [[host] port] register
     echo and then
     echo ' $' $0 [[host] port] example
-    to see an example.
+    echo to see an example.
 }
 
 check_arguments () {
