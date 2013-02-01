@@ -152,7 +152,7 @@
 	   (enotify-init-network)
 	   (setq enotify-idle-timer
 		 (run-with-timer enotify-mp-idle-time enotify-mp-idle-time
-				 'enotify-mp-clean-garbage-timer))
+				 'enotify-mp-clean-garbage))
 	   (enotify-mode-line-update))))
 
 ;;;###autoload
