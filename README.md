@@ -6,7 +6,7 @@ It is born as a vehicle for TDD notifications, as the writer does not like annoy
 
 An application can connect to enotify and send a notification message, that will discreetly appear in the emacs mode-line.
 
-## INSTALLATION 
+## INSTALLATION
 
 If you are updating from an old version, please check the INCOMPATIBLE-CHANGES file
 for possible breakages.
@@ -47,7 +47,7 @@ Messages are sent as strings and have this format:
     |<message size>|<message body>
 ----------------
 
-Message bodies have the form of a keyword argument list, like 
+Message bodies have the form of a keyword argument list, like
 
 ```lisp
 	(:register "MySlotID")
@@ -75,7 +75,7 @@ whose purpose of the :handler-fn parameter will be clarified in the following se
 
 ### Notifications
 
-The message used to send a notification has the form 
+The message used to send a notification has the form
 
 ```lisp
 	(:id <slot-name>
@@ -90,10 +90,10 @@ The message used to send a notification has the form
 - **text**: the text to be displayed in the notification area
 - **face**: the face used to display the text in the notification area
 - **help**: tooltip text on mouse-over
-- **mouse-1**: an (iteractive "e") handler function of the form 
+- **mouse-1**: an (iteractive "e") handler function of the form
 
   	       ----
-			(m1-handler event)            
+			(m1-handler event)
 	       ----
 
 	       It's possible to retrieve the slot id with
@@ -103,12 +103,11 @@ The message used to send a notification has the form
 	       ----
 
 ## Ruby/Rails/Rspec/Watchr TDD application
-As of now, [laynor/espectator][laynor/espectator] this is the only application for enotify.
-If you are interested, you can look at the code and see how does it work.
+As of now, [laynor/spectator-emacs][laynor/spectator-emacs] is the only application for enotify.
+If you are interested, you can look at the code and see how it works.
 
 It's best used together with [Rspec Org Formatter][RspecOrgFormatter], that provides
 org-mode formatted text for rspec results.
 
-[laynor/espectator]: https://github.com/laynor/espectator
+[laynor/spectator-emacs]: https://github.com/laynor/espectator-emacs
 [RspecOrgFormatter]: https://github.com/laynor/rspec_org_formatter
-
