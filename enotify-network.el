@@ -97,9 +97,12 @@ enotify server."
 
 (defun enotify-register-network-slot (id message-handler)
   "Registers a slot identified by ID, handling the messages with MESSAGE-HANDLER"
-    (if (functionp message-handler)
-	(puthash id message-handler enotify-message-handlers-table)
-      (error "Enotify: invalid slot message handler for slot-id %S" id)))
+  (let ((mh (if (enotify/plugin:name-p message-handler)
+                (enotify/plugin:handler message-handler)
+              message-handler)))
+    (if (functionp mh)
+	(puthash id mh enotify-message-handlers-table)
+      (error "Enotify: invalid slot message handler for slot-id %S" id))))
 
 
 (defun enotify-hash-has-key? (key table)

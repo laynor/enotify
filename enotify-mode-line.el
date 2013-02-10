@@ -130,8 +130,11 @@ slot-id of the icon clicked can be retrieved using
 `enotify-event->slot-id'."
   (destructuring-bind (&key text face mouse-1 help)
       notification
-    (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1] mouse-1)
+    (let ((map (make-sparse-keymap))
+          (mouse-1-handler (if (enotify/plugin:name-p mouse-1)
+                               (enotify/plugin:mouse-1-handler-fn mouse-1)
+                             mouse-1)))
+      (define-key map [mode-line mouse-1] mouse-1-handler)
       (define-key map [mode-line mouse-2] 'enotify-delete-slot-handler)
       (define-key map [mode-line C-mouse-1] (lambda (event)
 					      (interactive "e")
