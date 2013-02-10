@@ -130,6 +130,7 @@
 
 ;;; Code:
 
+(require 'enotify-plugin-support)
 (require 'enotify-group)
 (require 'enotify-mode-line)
 (require 'enotify-network)
