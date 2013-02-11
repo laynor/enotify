@@ -60,14 +60,14 @@ face. Returns t if the notification was blinking, nil otherwise."
 (defun enotify/tdd:report-message-handler (slot-id data)
   (destructuring-bind (&key mode report-text)
       data
-    (let ((buf (get-buffer-create (enotify-rspec-result-buffer-name slot-id))))
+    (let ((buf (get-buffer-create (enotify/tdd:test-result-buffer-name slot-id))))
       (save-current-buffer
         (set-buffer buf)
         (erase-buffer)
         (insert report-text)
         (when (and enotify/tdd:blink-delay (> enotify/tdd:blink-delay 0))
           (enotify/tdd::set-blink slot-id))
-        (cl-flet ((message (&rest args) (apply 'format args)))
+        (flet ((message (&rest args) (apply 'format args)))
           (funcall (intern (enotify/tdd::major-mode-fn mode))))))))
 
 (defun enotify/tdd:mouse-1-handler (event)
@@ -75,7 +75,7 @@ face. Returns t if the notification was blinking, nil otherwise."
   (or (enotify/tdd::unset-blink (enotify-event->slot-id event))
       (enotify-change-notification-face (enotify-event->slot-id event) 'enotify-normal-face))
   (switch-to-buffer-other-window
-   (enotify-rspec-result-buffer-name
+   (enotify/tdd:test-result-buffer-name
     (enotify-event->slot-id event))))
 
 (enotify/plugin:register
