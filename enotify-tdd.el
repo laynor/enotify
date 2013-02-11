@@ -1,6 +1,9 @@
 ;;;; Espectator plugin for enotify
 (require 'enotify)
 
+(defgroup enotify/tdd nil
+  "TDD (red/green) plugin for Enotify")
+
 (defun enotify/tdd:test-result-buffer-name (slot-id)
   (format "*%s test results*" slot-id))
 
@@ -9,38 +12,50 @@
 
 (make-face 'enotify/tdd::normal-face)
 
-(defvar enotify/tdd::blink-face-table (make-hash-table :test 'equal))
+(defvar enotify/tdd::blink-table (make-hash-table :test 'equal))
 
-(defun enotify/tdd::register-blink (slot-id face timer)
-  (puthash slot-id
-           (list (face-foreground face) (face-background face) timer blinker-face)
-           enotify/tdd::blink-face-table))
+(defun enotify/tdd::blink-helper (slot-id)
+  (cond ((null (enotify-mode-line-notification slot-id))
+         ;; cancel the timer if the notification has been closed
+         (cancel-timer (car (gethash slot-id enotify/tdd::blink-table))))
+        (t (destructuring-bind (timer original-face current-face)
+               (gethash slot-id enotify/tdd::blink-table)
+             (let ((face (if (eq original-face current-face)
+                             'enotify/tdd::normal-face
+                           original-face)))
+               (puthash slot-id (list timer original-face face) enotify/tdd::blink-table)
+               (enotify-change-notification-face slot-id face)
+               (redraw-modeline))))))
 
-(defun enotify/tdd::unregister-blink (slot-id)
-  (when (gethash slot-id enotify/tdd::blink-face-table)
-    (destructuring-bind (fg bg timer blinker-face)
-        (gethash slot-id enotify/tdd::blink-face-table)
-      (set-face-foreground blinker-face fg)
-      (set-face-background blinker-face bg)
-      (cancel-timer timer))
-    (remhash slot-id enotify/tdd::blink-face-table)))
+(defcustom enotify/tdd:blink-delay nil
+  "The notification blinking delay in seconds. NIL or 0 mean no blinking."
+  :group 'enotify/tdd
+  :type 'number)
 
-(defun enotify/tdd::toggle-face-foreground-helper (slot-id face alt-color)
-  (destructuring-bind (fg bg timer blinker-face)
-      (gethash slot-id enotify/tdd::blink-face-table)
-    (if (equal (face-foreground face) fg)
-        (set-face-foreground face alt-color)
-      (set-face-foreground face fg))))
+(defun enotify/tdd::set-blink (slot-id)
+  (when (gethash slot-id enotify/tdd::blink-table)
+    (enotify/tdd::unset-blink slot-id))
+  (let ((timer (run-with-timer enotify/tdd:blink-delay
+                               enotify/tdd:blink-delay
+                               'enotify/tdd::blink-helper slot-id))
+        (original-face (enotify-face (getf (enotify-mode-line-notification slot-id) :face))))
+    (puthash slot-id (list timer
+                           original-face
+                           original-face)
+             enotify/tdd::blink-table)))
 
-(defun enotify/tdd::set-face-blink (face slot-id blink-delay alt-color)
-  (let ((face (enotify-face face)))
-    (unless (gethash face enotify/tdd::blink-face-table)
-      (let ((blinker-face (make-face (intern (concat "enotify/tdd::blinker-face-" slot-id)))))
-        (let((timer (run-with-timer blink-delay blink-delay
-                                    'enotify/tdd::toggle-face-foreground-helper slot-id blinker-face alt-color)))
-          (apply 'set-face-attribute blinker-face nil (face-attr-construct face))
-          (enotify-change-notification-face slot-id blinker-face)
-          (enotify/tdd::register-blink slot-id face timer))))))
+(defun enotify/tdd::unset-blink (slot-id)
+  "Cancels the blinker timer and resets the notification original
+face. Returns t if the notification was blinking, nil otherwise."
+  (cond ((gethash slot-id enotify/tdd::blink-table)
+         (destructuring-bind (timer original-face current-face)
+             (gethash slot-id enotify/tdd::blink-table)
+           (cancel-timer timer)
+           (enotify-change-notification-face slot-id original-face))
+         ;;(remhash slot-id enotify/tdd::blink-table)
+         t)
+        (t nil)))
+
 
 (defun enotify/tdd:report-message-handler (slot-id data)
   (destructuring-bind (&key mode report-text)
@@ -50,14 +65,15 @@
         (set-buffer buf)
         (erase-buffer)
         (insert report-text)
-        (enotify/tdd::set-face-blink (enotify-face (getf (enotify-mode-line-notification slot-id) :face))
-                                     slot-id 1 (face-foreground 'enotify/tdd::normal-face))
+        (when (and enotify/tdd:blink-delay (> enotify/tdd:blink-delay 0))
+          (enotify/tdd::set-blink slot-id))
         (cl-flet ((message (&rest args) (apply 'format args)))
           (funcall (intern (enotify/tdd::major-mode-fn mode))))))))
 
 (defun enotify/tdd:mouse-1-handler (event)
   (interactive "e")
-  (enotify-change-notification-face (enotify-event->slot-id event) 'enotify-normal-face)
+  (or (enotify/tdd::unset-blink (enotify-event->slot-id event))
+      (enotify-change-notification-face (enotify-event->slot-id event) 'enotify-normal-face))
   (switch-to-buffer-other-window
    (enotify-rspec-result-buffer-name
     (enotify-event->slot-id event))))

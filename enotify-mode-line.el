@@ -138,7 +138,7 @@ slot-id of the icon clicked can be retrieved using
       (define-key map [mode-line mouse-2] 'enotify-delete-slot-handler)
       (define-key map [mode-line C-mouse-1] (lambda (event)
 					      (interactive "e")
-					      (popup-menu enotify-popup-menu event event))) 
+					      (popup-menu enotify-popup-menu event event)))
       (propertize text
 		  'face (enotify-face face)
 		  'help-echo (concat (format "[ %s ]\n" slot-id) help
@@ -146,7 +146,7 @@ slot-id of the icon clicked can be retrieved using
 		  'mouse-face (enotify-face face)
 		  'slot-id slot-id
 		  'local-map map))))
-  
+
 (defun enotify-mode-line-notifications-list ()
   "Returns a list with the notifications properly sorted and `propertize'd."
   (let (res)
@@ -161,7 +161,7 @@ slot-id of the icon clicked can be retrieved using
   (interactive)
   (let ((res nil))
     (setq enotify-mode-line-string
-	  (append 
+	  (append
 	   (list enotify-mode-line-prefix)
 	   (enotify-list-inject (enotify-mode-line-notifications-list)
 				enotify-mode-line-notifications-separator)
