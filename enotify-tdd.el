@@ -68,7 +68,10 @@ face. Returns t if the notification was blinking, nil otherwise."
         (when (and enotify/tdd:blink-delay (> enotify/tdd:blink-delay 0))
           (enotify/tdd::set-blink slot-id))
         (flet ((message (&rest args) (apply 'format args)))
-          (funcall (intern (enotify/tdd::major-mode-fn mode))))))))
+          (if mode
+              (funcall (intern (enotify/tdd::major-mode-fn mode)))
+            (normal-mode)))))))
+
 
 (defun enotify/tdd:mouse-1-handler (event)
   (interactive "e")
