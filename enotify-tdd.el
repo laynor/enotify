@@ -86,4 +86,4 @@ face. Returns t if the notification was blinking, nil otherwise."
  :handler 'enotify/tdd:report-message-handler
  :mouse-1-handler 'enotify/tdd:mouse-1-handler)
 
-(provide 'enotify-espectator)
+(provide 'enotify-tdd)
