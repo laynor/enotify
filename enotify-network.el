@@ -34,7 +34,8 @@ abailable one."
 						 :server t
 						 :family 'ipv4
 						 :service port
-						 :filter 'enotify-message-filter)))
+						 :filter 'enotify-message-filter))
+  (process-kill-without-query enotify-connection))
 
 (defun enotify-start-server-2 (port)
   (condition-case err
@@ -58,13 +59,13 @@ abailable one."
 	       (enotify-start-server-3 (1+ port) nil try-next))
 	      (t (error "[port=%d] %s" port (error-message-string err))))
       port)))
-    
+
 (defun enotify-start-server ()
   (setq enotify-port (enotify-start-server-3 enotify-port
 					     enotify-fallback-ports
 					     enotify-use-next-available-port)))
 
-    
+
 ;;;###autoload
 (defun enotify-port ()
   "Displays a message indicating what port is bound to the
@@ -80,7 +81,7 @@ enotify server."
 		 (propertize (format "%d" enotify-port)
 			     'face (enotify-face face))))
     (message "Enotify not running.")))
-				     
+
 ;;; Notification slot registration
 ;;; Slot identification:
 ;;; - named slot
@@ -138,7 +139,7 @@ right message handler."
   (let ((msg-data (enotify-mp-get-message network-connection)))
     (when msg-data
       (let ((message (car (read-from-string msg-data))))
-	(condition-case err 
+	(condition-case err
 	    (destructuring-bind (&key id notification data register handler-fn)
 		message
 	      (cond ((not (null register)) ; Registration message
@@ -164,7 +165,7 @@ right message handler."
 	  (error (error "Enotify: Bad message from <%s>:: %S -> %S"
 			(enotify-connection-id network-connection)
 			message err)))))))
-	    
+
 (defun enotify-unregister-network-slot (slot-id)
   "Unregisters the slot identified by SLOT-ID."
   (remhash slot-id enotify-message-handlers-table))
