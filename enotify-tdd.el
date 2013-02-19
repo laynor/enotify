@@ -76,7 +76,7 @@ face. Returns t if the notification was blinking, nil otherwise."
 (defun enotify/tdd:mouse-1-handler (event)
   (interactive "e")
   (or (enotify/tdd::unset-blink (enotify-event->slot-id event))
-      (enotify-change-notification-face (enotify-event->slot-id event) 'enotify-normal-face))
+      (enotify-change-notification-face (enotify-event->slot-id event) 'enotify/tdd::normal-face))
   (switch-to-buffer-other-window
    (enotify/tdd:test-result-buffer-name
     (enotify-event->slot-id event))))
