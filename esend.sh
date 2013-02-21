@@ -61,7 +61,7 @@ example_registration='(:register "esend.sh"
                     (set-buffer buf)
                     (erase-buffer)
                     (insert data)))))'
-                    
+
 example_msg='(:id "esend.sh"
  :notification (:text "esend.sh"
                 :face :success
@@ -69,15 +69,21 @@ example_msg='(:id "esend.sh"
                 :help "Example tooltip")
  :data "Some example data")
 '
-
-nc -h 2>&1 >/dev/null | grep 'OpenBSD' > /dev/null
-openbsd_nc=$?
-if [ $openbsd_nc -eq 0 ]
-then
-    NC="nc"
-else
-    NC="nc -c"
-fi
+foo=`nc -h 2>&1`
+nc_impl=GNU
+echo $foo | grep 'OpenBSD' > /dev/null && nc_impl=BSD
+echo $foo | grep 'nmap' > /dev/null && nc_impl=NMAP
+case $nc_impl in
+    "BSD")
+        NC="nc"
+        ;;
+    "NMAP")
+        NC="nc"
+        ;;
+    "GNU")
+        NC="nc -c"
+        ;;
+esac
 check_arguments
 case $msg in
     "register")
@@ -95,6 +101,6 @@ then
 else
     print_usage "wrong argument format: port = $port"
 fi
-	
 
-# mkmsg $1 | nc 
+
+# mkmsg $1 | nc
