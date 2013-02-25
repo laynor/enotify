@@ -76,7 +76,10 @@ ids.")
 
 (defun enotify-event->text (event)
   "Returns the text object associated to the mouse click event EVENT."
-  (car (nth 4 (nth 1 event))))
+  (destructuring-bind (event-type (window pos-or-area (x . y) timestamp
+                                          (text . pos) &rest _))
+      event
+    (substring text pos (1+ pos))))
 
 (defun enotify-icon->slot-id (icon-text)
   "Returns the slot id for ICON-TEXT."
