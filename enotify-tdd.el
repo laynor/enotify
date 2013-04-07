@@ -61,13 +61,14 @@ face. Returns t if the notification was blinking, nil otherwise."
   (destructuring-bind (&key mode report-text)
       data
     (let ((buf (get-buffer-create (enotify/tdd:test-result-buffer-name slot-id))))
-      (save-current-buffer
-        (set-buffer buf)
+      (with-current-buffer buf
         (erase-buffer)
         (insert report-text)
         (when (and enotify/tdd:blink-delay (> enotify/tdd:blink-delay 0))
           (enotify/tdd::set-blink slot-id))
-        (flet ((message (&rest args) (apply 'format args)))
+        (flet ((message (&rest args) (apply 'format args))
+               ;; KLUDGE: this is needed for org mode: recentering is done on the current window!!
+               (recenter (&rest args) nil))
           (if mode
               (funcall (intern (enotify/tdd::major-mode-fn mode)))
             (normal-mode)))))))

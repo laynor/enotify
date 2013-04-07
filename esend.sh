@@ -57,8 +57,8 @@ esac
 example_registration='(:register "esend.sh"
  :handler-fn (lambda (id data)
                (let ((buf (get-buffer-create "*esend.sh example*")))
-                  (save-current-buffer
-                    (set-buffer buf)
+                  (with-current-buffer buf
+                    ;;(set-buffer buf)
                     (erase-buffer)
                     (insert data)))))'
 

@@ -30,8 +30,7 @@ message buffer cleaning for dead connections")
 ;;; Store DATA in the buffer associated to CONNECTION
 (defun enotify-mp-store-data (connection data)
   (let ((buffer (enotify-mp-buffer connection)))
-    (save-current-buffer 
-      (set-buffer buffer)
+    (with-current-buffer buffer
       (goto-char (point-max))
       (insert data))))
 
@@ -40,8 +39,7 @@ message buffer cleaning for dead connections")
 (defvar enotify-mp-size-regex "|\\([[:digit:]]+\\)|")
 (defun enotify-mp-get-message (connection)
   (let ((buf (if (bufferp connection) connection (enotify-mp-buffer connection))))
-    (save-current-buffer
-      (set-buffer buf)
+    (with-current-buffer buf
       (goto-char (point-min))
       (let ((msg-start (re-search-forward enotify-mp-size-regex nil t)))
 	(when msg-start
@@ -70,7 +68,7 @@ message buffer cleaning for dead connections")
 				   pattern))
 		 bname)))
 	   (buffer-list))))
-		
+
 (defvar enotify-mp-cgrbg-count 0)
 ;;; Dead connection cleaning
 (defun enotify-mp-clean-garbage ()
