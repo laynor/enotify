@@ -32,6 +32,12 @@
   :group 'enotify/tdd
   :type 'number)
 
+(defcustom enotify/tdd:enable-message-notification t
+  "Whether or not to display a message containing the test
+  summary in the minibuffer"
+  :group 'enotify/tdd
+  :type 'boolean)
+
 (defun enotify/tdd::set-blink (slot-id)
   (when (gethash slot-id enotify/tdd::blink-table)
     (enotify/tdd::unset-blink slot-id))
@@ -58,12 +64,14 @@ face. Returns t if the notification was blinking, nil otherwise."
 
 
 (defun enotify/tdd:report-message-handler (slot-id data)
-  (destructuring-bind (&key mode report-text)
+  (destructuring-bind (&key mode report-text message)
       data
     (let ((buf (get-buffer-create (enotify/tdd:test-result-buffer-name slot-id))))
       (with-current-buffer buf
         (erase-buffer)
         (insert report-text)
+        (when (and message enotify/tdd:enable-message-notification)
+          (message message))
         (when (and enotify/tdd:blink-delay (> enotify/tdd:blink-delay 0))
           (enotify/tdd::set-blink slot-id))
         (flet ((message (&rest args) (apply 'format args))
